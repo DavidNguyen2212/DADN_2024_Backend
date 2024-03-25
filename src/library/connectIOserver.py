@@ -1,5 +1,5 @@
 from Adafruit_IO import MQTTClient
-import sys
+import sys, os
 import json
 from library import db
 from library.services.format import format_lvroom
@@ -10,8 +10,8 @@ import datetime, pytz
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
 AIO_FEED_ID = ['livingroom']
-AIO_USERNAME = 'david_nguyen7603'
-AIO_KEY = 'aio_rUVY94t2nKtEgGtMwIsEySHRTacA'
+AIO_USERNAME = os.environ.get("AIO_USERNAME")
+AIO_KEY = os.environ.get("AIO_KEY")
 
 def connected(client):
     print("Kết nối thành công...")

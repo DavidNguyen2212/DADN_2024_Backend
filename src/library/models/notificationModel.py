@@ -4,7 +4,7 @@ import datetime
 class Notification:
     collection = db["notifications"]
     
-    def __init__(self, notif_type: str, content: str, created_at: str, device: str = None, place: str =None):
+    def __init__(self, notif_type: str, content: str, created_at: str, device: str = None, place: str =None, isRead: bool = False):
         # required
         self.type = notif_type
         self.content = content
@@ -12,6 +12,7 @@ class Notification:
         # optional
         self.device = device
         self.place = place
+        self.isRead = isRead
     
     @classmethod
     def insert_notification(cls, new_notif: dict):
@@ -22,8 +23,9 @@ class Notification:
         return result.inserted_id
 
     @classmethod
-    def find_notifs_by_day(cls, day):
+    def find_notifs_by_day(cls, day): 
         """
+        Day format: yyyy-mm-dd, example: 2024-12-03
         Find notification list by the day requested by user. Return the result of query, 
         not an Notification object.
         Use the format_notifs() from services to deal with it
@@ -32,13 +34,13 @@ class Notification:
 
         # Create the range for the query
         start_datetime = day_to_get_datetime.replace(hour=0, minute=0, second=0)
-        end_datetime = day_to_get_datetime.replace(hour=23, minute=59, second=59)
+        end_datetime = (day_to_get_datetime + datetime.timedelta(days=1)).replace(hour=0, minute=0, second=0)
 
         # Searching
         notices = Notification.collection.find({
             "created_at": {
             "$gte": start_datetime.isoformat(),
-            "$lte": end_datetime.isoformat()
+            "$lt": end_datetime.isoformat()
             }
         }).sort({"created_at": -1})
         
@@ -51,18 +53,3 @@ class Notification:
         instanceNotif_to_dict = {key: value for key,value in vars(self).items() if value is not None} 
         return instanceNotif_to_dict
         
-
-    
-    # def update_book(self, title, new_data):
-    #     """
-    #     Update a book's data by its title.
-    #     """
-    #     result = self.collection.update_one({"title": title}, {"$set": new_data})
-    #     return result.modified_count
-    
-    # def delete_book(self, title):
-    #     """
-    #     Delete a book by its title.
-    #     """
-    #     result = self.collection.delete_one({"title": title})
-    #     return result.deleted_count

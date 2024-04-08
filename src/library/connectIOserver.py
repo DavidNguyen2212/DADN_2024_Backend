@@ -6,10 +6,12 @@ from library.services.format import format_lvroom
 from library import socket_io
 from flask_socketio import emit, send
 from library.models.notificationModel import Notification
+from library.models.roomModel import Room
+from library.models.deviceModel import Device
 import datetime, pytz
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
-AIO_FEED_ID = ['livingroom']
+AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','fan-status']
 AIO_USERNAME = os.environ.get("AIO_USERNAME")
 AIO_KEY = os.environ.get("AIO_KEY")
 
@@ -27,32 +29,72 @@ def disconnected(client):
 
 def message(client, feed_id, payload):
     print("Nhận dữ liệu từ " + feed_id + ": " + payload)
-    # print(type(payload))
-    payload_to_dict = json.loads(payload)
-    if feed_id == "livingroom":
-        last_record = db["livingroom"].find_one(sort=[('_id', -1)])
-        db["livingroom"].insert_one(payload_to_dict)
-        changed_field = handleFindChange(db, "livingroom", payload_to_dict, last_record)
-        print(changed_field)
-        if changed_field is not None:
-            if changed_field != "tempAC":
-                newNotif = Notification("Thay đổi thành công", 
+
+    if feed_id == "temp":
+        last_record = Room.collection.find_one({"roomId": 1}, sort=[('_id', -1)])
+        new_record = Room(1, "livingroom", payload, last_record["humidity"], last_record["lux"], 
+                               datetime.datetime.now(tz).isoformat()).to_dictFormat()
+        Room.insert_room_record(new_record)
+    elif feed_id == "humi": 
+        last_record = Room.collection.find_one({"roomId": 1}, sort=[('_id', -1)])
+        new_record = Room(1, "livingroom", last_record["humidity"], payload, last_record["lux"], 
+                               datetime.datetime.now(tz).isoformat()).to_dictFormat()
+        Room.insert_room_record(new_record)
+    elif feed_id == "light": 
+        last_record = Room.collection.find_one({"roomId": 1}, sort=[('_id', -1)])
+        new_record = Room(1, "livingroom", last_record["temperature"], last_record["humidity"], payload, 
+                               datetime.datetime.now(tz).isoformat()).to_dictFormat()
+        Room.insert_room_record(new_record)
+        
+    if feed_id == "chandeliers":
+        last_record = Device.collection.find_one({"name": "chandeliers", "roomId": 1}, sort=[("_id", -1)])
+        last_record["state"] = payload
+        time = datetime.datetime.now(tz).isoformat()
+        last_record["updated_at"] = time
+        Device.collection.update_one({"_id": last_record["_id"]}, {"$set": last_record})
+
+        newNotif = Notification("Thay đổi thành công", 
                     "Bạn đã thay đổi thành công trạng thái thiết bị", 
-                    datetime.datetime.now(tz).isoformat(), str(changed_field), "phòng khách").to_dictFormat()
+                    time,"đèn chùm", "phòng khách", False).to_dictFormat()
+        Notification.insert_notification(newNotif)
+        socket_io.emit('Announce change', {"refetch": True})
+
+    elif feed_id == "control-fan":
+        last_record = Device.collection.find_one({"name": "air_conditioner", "roomId": 1}, sort=[("_id", -1)])
+        last_record["state"] = payload
+        time = datetime.datetime.now(tz).isoformat()
+        last_record["updated_at"] = time
+        Device.collection.update_one({"_id": last_record["_id"]}, {"$set": last_record})
+
+        newNotif = Notification("Thay đổi thành công", 
+                    "Bạn đã thay đổi thành công trạng thái thiết bị", 
+                    time,"điều hòa", "phòng khách", False).to_dictFormat()
+        Notification.insert_notification(newNotif)
+        socket_io.emit('Announce change', {"refetch": True})
+
+    elif feed_id == "fan-status":
+        last_record = Device.collection.find_one({"name": "air_conditioner", "roomId": 1}, sort=[("_id", -1)])
+        last_temp = last_record["current_temp"]
+        last_record["current_temp"] = int(payload)
+        time = datetime.datetime.now(tz).isoformat()
+        last_record["updated_at"] = time
+        Device.collection.update_one({"_id": last_record["_id"]}, {"$set": last_record})
+
+        if last_record["state"] == "1":
+            if int(payload) < 20:
+                newNotif = Notification("Nhắc nhở", 
+                            f"Nhiệt độ đang dưới mức 20 độ", 
+                            time, "điều hòa", "phòng khách", False).to_dictFormat()
                 Notification.insert_notification(newNotif)
                 socket_io.emit('Announce change', {"refetch": True})
-
-
-
-def handleFindChange(dbs, collection, new_record, last_record):
-    if last_record is None:
-        return None  
-    for key in new_record.keys():
-        if key not in ["temperature", "humidity", "lux", "updated_at", "_id"]:
-            if new_record[key] != last_record.get(key):
-                return key
-    return None  
-
+            print(last_temp, int(payload))
+            if last_temp != int(payload):
+                print("cc")
+                newNotif = Notification("Thay đổi thành công", 
+                            f"Bạn đã thay đổi thành công nhiệt độ của", 
+                            time, "điều hòa", "phòng khách", False).to_dictFormat()
+                Notification.insert_notification(newNotif)
+                socket_io.emit('Announce change', {"refetch": True})
 
 
 

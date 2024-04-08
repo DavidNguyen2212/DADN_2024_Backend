@@ -4,13 +4,17 @@ import datetime, pytz
 ######
 def format_notifs(notices: any):
     response = []
+    unReadCount = 0
     for notice in notices:
+        if notice["isRead"] == False:
+            unReadCount = unReadCount + 1
         if notice["type"] == "Tai nạn xảy ra":
             res = {
                 "type": notice["type"],
                 "content": notice["content"],
                 "place": notice["place"],
-                "created_at": notice["created_at"]
+                "created_at": notice["created_at"],
+                "isRead": notice["isRead"]
             }
             response += [res]
         elif notice["type"] == "Thay đổi thành công":
@@ -19,24 +23,28 @@ def format_notifs(notices: any):
                 "content": notice["content"],
                 "device": notice["device"],
                 "place": notice["place"],
-                "created_at": notice["created_at"]
+                "created_at": notice["created_at"],
+                "isRead": notice["isRead"]
             }
             response += [res]
         elif notice["type"] == "Nhắc nhở":
             res = {
                 "type": notice["type"],
                 "content": notice["content"],
-                "created_at": notice["created_at"]
+                "created_at": notice["created_at"],
+                "isRead": notice["isRead"]
             }
             response += [res]
         elif notice["type"] == "Cảnh báo":
             res = {
                 "type": notice["type"],
                 "content": notice["content"],
-                "created_at": notice["created_at"]
+                "created_at": notice["created_at"],
+                "isRead": notice["isRead"]
             }
             response += [res]
-
+        res["_id"] = str(notice["_id"])
+    response.insert(0, {"unReadCount": unReadCount})
     return response
 
 

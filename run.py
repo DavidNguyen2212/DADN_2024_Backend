@@ -3,8 +3,8 @@ from library import app
 from library import socket_io
 from library import connectIOserver     # connected! 
 import sys,requests
-from gevent import monkey
-monkey.patch_all(thread=False, select=False)
+# from gevent import monkey
+# monkey.patch_all(thread=False, select=False)
 
 this_app = app
 if __name__ == "__main__":

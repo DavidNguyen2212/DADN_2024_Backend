@@ -9,11 +9,11 @@ from flask_cookies import Cookies
 mqtt_connected = False 
 app = Flask(__name__)
 app.config.from_pyfile("../config/config.py")
-CORS(app, origins="http://localhost:3000", supports_credentials=True)
+CORS(app, origins="https://dadn-2024-team-blue-whale.vercel.app/", supports_credentials=True)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 cookies = Cookies(GTM_ID= "GT-987654321", app=app)
-socket_io = SocketIO(app, cors_allowed_origins="http://localhost:3000")
+socket_io = SocketIO(app, cors_allowed_origins="https://dadn-2024-team-blue-whale.vercel.app/")
 
 @socket_io.on('message')
 def handle_message(message):

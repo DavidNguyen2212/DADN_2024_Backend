@@ -7,7 +7,7 @@ from library import db
 from library.services import format
 from library.models.notificationModel import Notification
 from bson import ObjectId
-
+from flask_jwt_extended import jwt_required
 
 # Create a time zone object for GMT+7
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
@@ -18,6 +18,7 @@ def get_all_notifications():
 
 
 @app.route("/get-all-notifications-by-day", methods=['GET'])
+@jwt_required()
 def get_all_notifs_by_day():
     day_to_get = request.args.get("day")
     notices = Notification.find_notifs_by_day(day_to_get)

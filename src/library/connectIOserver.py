@@ -11,7 +11,7 @@ from library.models.deviceModel import Device
 import datetime, pytz
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
-AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','fan-status']
+AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac']
 AIO_USERNAME = os.environ.get("AIO_USERNAME")
 AIO_KEY = os.environ.get("AIO_KEY")
 
@@ -31,33 +31,27 @@ def message(client, feed_id, payload):
     print("Nhận dữ liệu từ " + feed_id + ": " + payload)
 
     if feed_id == "temp":
-        last_record = Room.collection.find_one({"roomId": 1}, sort=[('_id', -1)])
+        last_record = Room.collection.find_one({"id": 1}, sort=[('_id', -1)])
         new_record = Room(1, "livingroom", payload, last_record["humidity"], last_record["lux"], 
                                datetime.datetime.now(tz).isoformat()).to_dictFormat()
         Room.insert_room_record(new_record)
     elif feed_id == "humi": 
-        last_record = Room.collection.find_one({"roomId": 1}, sort=[('_id', -1)])
-        new_record = Room(1, "livingroom", last_record["humidity"], payload, last_record["lux"], 
+        last_record = Room.collection.find_one({"id": 1}, sort=[('_id', -1)])
+        new_record = Room(1, "livingroom", last_record["temperature"], payload, last_record["lux"], 
                                datetime.datetime.now(tz).isoformat()).to_dictFormat()
         Room.insert_room_record(new_record)
     elif feed_id == "light": 
-        last_record = Room.collection.find_one({"roomId": 1}, sort=[('_id', -1)])
+        last_record = Room.collection.find_one({"id": 1}, sort=[('_id', -1)])
         new_record = Room(1, "livingroom", last_record["temperature"], last_record["humidity"], payload, 
                                datetime.datetime.now(tz).isoformat()).to_dictFormat()
         Room.insert_room_record(new_record)
         
-    if feed_id == "chandeliers":
+    elif feed_id == "chandeliers":
         last_record = Device.collection.find_one({"name": "chandeliers", "roomId": 1}, sort=[("_id", -1)])
         last_record["state"] = payload
         time = datetime.datetime.now(tz).isoformat()
         last_record["updated_at"] = time
         Device.collection.update_one({"_id": last_record["_id"]}, {"$set": last_record})
-
-        newNotif = Notification("Thay đổi thành công", 
-                    "Bạn đã thay đổi thành công trạng thái thiết bị", 
-                    time,"đèn chùm", "phòng khách", False).to_dictFormat()
-        Notification.insert_notification(newNotif)
-        socket_io.emit('Announce change', {"refetch": True})
 
     elif feed_id == "control-fan":
         last_record = Device.collection.find_one({"name": "air_conditioner", "roomId": 1}, sort=[("_id", -1)])
@@ -66,36 +60,21 @@ def message(client, feed_id, payload):
         last_record["updated_at"] = time
         Device.collection.update_one({"_id": last_record["_id"]}, {"$set": last_record})
 
-        newNotif = Notification("Thay đổi thành công", 
-                    "Bạn đã thay đổi thành công trạng thái thiết bị", 
-                    time,"điều hòa", "phòng khách", False).to_dictFormat()
-        Notification.insert_notification(newNotif)
-        socket_io.emit('Announce change', {"refetch": True})
-
-    elif feed_id == "fan-status":
+    elif feed_id == "ac":
         last_record = Device.collection.find_one({"name": "air_conditioner", "roomId": 1}, sort=[("_id", -1)])
         last_temp = last_record["current_temp"]
-        last_record["current_temp"] = int(payload)
+        last_record["current_temp"] = int(int(payload) / 100 * 40)
         time = datetime.datetime.now(tz).isoformat()
         last_record["updated_at"] = time
         Device.collection.update_one({"_id": last_record["_id"]}, {"$set": last_record})
 
-        if last_record["state"] == "1":
-            if int(payload) < 20:
+        if last_record["state"] == "ON":
+            if int(payload) / 100 * 40 < 20:
                 newNotif = Notification("Nhắc nhở", 
                             f"Nhiệt độ đang dưới mức 20 độ", 
                             time, "điều hòa", "phòng khách", False).to_dictFormat()
                 Notification.insert_notification(newNotif)
                 socket_io.emit('Announce change', {"refetch": True})
-            print(last_temp, int(payload))
-            if last_temp != int(payload):
-                print("cc")
-                newNotif = Notification("Thay đổi thành công", 
-                            f"Bạn đã thay đổi thành công nhiệt độ của", 
-                            time, "điều hòa", "phòng khách", False).to_dictFormat()
-                Notification.insert_notification(newNotif)
-                socket_io.emit('Announce change', {"refetch": True})
-
 
 
 client = MQTTClient(AIO_USERNAME, AIO_KEY)

@@ -1,4 +1,6 @@
-import datetime, pytz
+import datetime, pytz, re
+import requests
+import json
 ######
 ## Format function for the controllers
 ######
@@ -72,3 +74,33 @@ def format_lvroom(field, value, last_record):
         new_record["updated_at"] = datetime.datetime.now(tz).isoformat()
 
     return new_record
+
+def handleRegex(reg: str):
+    # Sử dụng regex để tìm và thay thế tất cả các ký tự số trong chuỗi thành một khoảng trắng
+    num = re.search(r'\d+', reg)
+    noNumReg = re.sub(r'\d+', '', reg)
+    if num:
+        number = int(num.group()) 
+        return number, noNumReg 
+    else:
+        return None, noNumReg
+    
+def get_Goldprice():
+    api_url = 'http://api.btmc.vn/api/BTMCAPI/getpricebtmc?key=3kd8ub1llcg9t45hnoh8hmn7t5kc2v'  # Thay thế URL này bằng URL thực tế của API Python
+
+    # Gửi yêu cầu GET tới API Python
+    response = requests.get(api_url)
+
+    # Trả về kết quả từ API Python
+    if response.status_code == 200:
+        data = response.json()["DataList"]["Data"]
+        text_response = "Giá vàng hôm nay như sau: "
+        for i in range(3):
+            name = data[i][f"@n_{i+1}"]
+            kara = data[i][f"@k_{i+1}"]
+            inprice = data[i][f"@pb_{i+1}"]
+            outprice = data[i][f"@ps_{i+1}"]
+            input_time = data[i][f"@d_{i+1}"]
+            text_response = text_response + name + ", hàm lượng kara: " + kara + ", giá mua vào: " + inprice + ", giá bán ra: "+ outprice + ", cập nhật lúc: " + input_time + ". " 
+
+        return text_response

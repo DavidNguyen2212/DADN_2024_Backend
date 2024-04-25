@@ -12,7 +12,7 @@ app.config.from_pyfile("../config/config.py")
 CORS(app, origins="http://localhost:3000", supports_credentials=True)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-cookies = Cookies(app=app)
+cookies = Cookies(GTM_ID= "GT-987654321", app=app)
 socket_io = SocketIO(app, cors_allowed_origins="http://localhost:3000")
 
 @socket_io.on('message')

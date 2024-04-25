@@ -21,6 +21,7 @@ def handle_message(message):
 mongo_client = PyMongo(app)
 db = mongo_client.db
 
+
 from library.controllers import notificationsController
 from library.controllers import authController
 from library.controllers import refreshTokenController

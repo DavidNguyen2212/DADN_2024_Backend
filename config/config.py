@@ -1,7 +1,5 @@
 import os
 from dotenv import load_dotenv  # pip3 install python-dotenv
-from gevent import monkey
-monkey.patch_all()
 
 load_dotenv()
 SECRET_KEY = os.environ.get("KEY")

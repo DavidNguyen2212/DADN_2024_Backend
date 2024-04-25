@@ -8,8 +8,6 @@ from flask_cookies import Cookies
 
 mqtt_connected = False 
 app = Flask(__name__)
-from gevent import monkey
-monkey.patch_all()
 
 app.config.from_pyfile("../config/config.py")
 CORS(app, origins="https://dadn-2024-team-blue-whale.vercel.app/", supports_credentials=True)

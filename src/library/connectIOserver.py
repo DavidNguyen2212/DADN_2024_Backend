@@ -1,5 +1,4 @@
-# from Adafruit_IO import MQTTClient
-from library.initIOserver import MQTTClient
+from Adafruit_IO import MQTTClient
 import sys, os
 import json
 from library import db

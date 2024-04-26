@@ -8,20 +8,18 @@ from flask_cookies import Cookies
 
 mqtt_connected = False 
 app = Flask(__name__)
-
 app.config.from_pyfile("../config/config.py")
-CORS(app, origins="*", supports_credentials=True)
+CORS(app, origins="http://localhost:3000", supports_credentials=True)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-cookies = Cookies(GTM_ID= "GT-987654321", app=app)
-socket_io = SocketIO(app, cors_allowed_origins="*")
+cookies = Cookies(app=app)
+socket_io = SocketIO(app, cors_allowed_origins="http://localhost:3000")
 
 @socket_io.on('message')
 def handle_message(message):
     print('OK!, client rep: ' + message )
 mongo_client = PyMongo(app)
 db = mongo_client.db
-
 
 from library.controllers import notificationsController
 from library.controllers import authController

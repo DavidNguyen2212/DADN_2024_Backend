@@ -12,7 +12,7 @@ def load_model(file_name):
     model = joblib.load(file_name, mmap_mode='r')
     return model
 
-commandSet = load_model("library/AI_modules/commandVoice/commandset.pkl")
+commandSet = load_model("src/library/AI_modules/commandVoice/commandset.pkl")
 
 poems = ["Mặt trời mới mọc ở đằng tây... Thiên hạ ngạc nhiên chuyện lạ này. Ngơ ngác nhìn nhau và tự hỏi. Thức dậy hay là... ngủ nữa đây.",
          "Trong tù không rượu cũng không hoa, Cảnh đẹp đêm nay, khó hững hờ! Người ngắm trăng soi ngoài cửa sổ... Trăng nhòm khe cửa ngắm nhà thơ.",

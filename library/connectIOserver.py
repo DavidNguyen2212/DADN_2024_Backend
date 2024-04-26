@@ -1,4 +1,5 @@
-from Adafruit_IO import MQTTClient
+# from Adafruit_IO import MQTTClient
+from library.initIOserver import MQTTClient
 import sys, os
 import json
 from library import db
@@ -9,6 +10,8 @@ from library.models.notificationModel import Notification
 from library.models.roomModel import Room
 from library.models.deviceModel import Device
 import datetime, pytz
+import paho.mqtt.client as mqtt
+
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
 AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac']

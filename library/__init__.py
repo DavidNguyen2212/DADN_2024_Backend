@@ -14,12 +14,12 @@ app.config.from_pyfile("../config/config.py")
 CORS(app, origins="*", supports_credentials=True)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-cookies = Cookies(app=app)
+cookies = Cookies(GTM_ID="GT-XXXXXXXXX",app=app)
 socket_io = SocketIO(app, cors_allowed_origins="*")
 
-@socket_io.on('message')
-def handle_message(message):
-    print('OK!, client rep: ' + message )
+# @socket_io.on('message')
+# def handle_message(message):
+#     print('OK!, client rep: ' + message )
 mongo_client = PyMongo(app)
 db = mongo_client.db
 

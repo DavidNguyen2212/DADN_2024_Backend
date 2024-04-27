@@ -38,8 +38,8 @@ def login():
         # Thêm trường refresh token của người dùng trong cơ sở dữ liệu
         users.update_one({"_id": user_found["_id"]}, {"$set": {"refresh_token": refresh_token}})
         response = make_response(jsonify({"access_token": access_token}))
-        response.set_cookie('abcid', 'Hello', domain=".dadn-2024-teambluewhale.onrender.com", httponly=True, secure=True, samesite='None', max_age=63072000)
-        set_refresh_cookies(response, refresh_token, max_age=24*60*60*1000, domain=".dadn-2024-teambluewhale.onrender.com")
+        response.set_cookie('abcid', 'Hello', domain="dadn-2024-teambluewhale.onrender.com", httponly=True, secure=True, samesite='None', max_age=63072000)
+        set_refresh_cookies(response, refresh_token, max_age=24*60*60*1000, domain="dadn-2024-teambluewhale.onrender.com")
         # print(jsonify(response))
         return response, 200
     else:

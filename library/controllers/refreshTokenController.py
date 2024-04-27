@@ -1,4 +1,4 @@
-from library import app, db, bcrypt, cookies
+from library import app, db, bcrypt
 from flask import Flask, jsonify, request
 from flask_jwt_extended import create_access_token, get_jwt_identity, create_refresh_token, jwt_required, set_refresh_cookies
 import datetime

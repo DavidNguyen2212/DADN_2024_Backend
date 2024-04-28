@@ -28,12 +28,12 @@ db = mongo_client.db
 
 AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac']
 
-@mqtt.on_connect()
-def handle_connect(client, userdata, flags, rc):
-    topics = list(map(lambda x: "Giaqui14032002/feeds/" + x, AIO_FEED_ID))
-    for topic in topics:
-        mqtt.subscribe(topic)
-        print("Subcribe thành công")
+# @mqtt.on_connect()
+# def handle_connect(client, userdata, flags, rc):
+topics = list(map(lambda x: "Giaqui14032002/feeds/" + x, AIO_FEED_ID))
+for topic in topics:
+    mqtt.subscribe(topic)
+    print("Subcribe thành công")
 
 @mqtt.on_message()
 def handle_mqtt_message(client, userdata, message):

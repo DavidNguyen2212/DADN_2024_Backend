@@ -1,5 +1,5 @@
-import eventlet
-eventlet.monkey_patch()
+# import eventlet
+# eventlet.monkey_patch()
 from flask import Flask, request, Blueprint
 from flask_pymongo import PyMongo
 from flask_socketio import SocketIO, emit, send
@@ -34,7 +34,6 @@ from library.models.notificationModel import Notification
 from library.models.roomModel import Room
 from library.models.deviceModel import Device
 import datetime, pytz
-import paho.mqtt.client as mqtt
 
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')

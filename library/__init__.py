@@ -1,5 +1,5 @@
-import gevent.monkey
-gevent.monkey.patch_all(select=False, thread=False)
+# import gevent.monkey
+# gevent.monkey.patch_all(select=False, thread=False)
 from flask import Flask, request, Blueprint
 from flask_pymongo import PyMongo
 from flask_socketio import SocketIO, emit, send
@@ -110,6 +110,7 @@ client.on_message = message
 client.on_subscribe = subscribe
 
 client.connect()
+client.loop_background()
 # client.loop()
 
 from library.controllers import notificationsController

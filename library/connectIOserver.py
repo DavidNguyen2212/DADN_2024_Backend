@@ -7,7 +7,7 @@ from library.models.notificationModel import Notification
 from library.models.roomModel import Room
 from library.models.deviceModel import Device
 import datetime, pytz
-import paho.mqtt.client as mqtt
+# import paho.mqtt.client as mqtt
 
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
@@ -77,18 +77,20 @@ def message(client, feed_id, payload):
                 socket_io.emit('Announce change', {"refetch": True})
 
 
-client = MQTTClient(AIO_USERNAME, AIO_KEY)
-client.on_connect = connected
-client.on_disconnect = disconnected
-client.on_message = message
-client.on_subscribe = subscribe
+def create_Client():
+    client = MQTTClient(AIO_USERNAME, AIO_KEY)
+    client.on_connect = connected
+    client.on_disconnect = disconnected
+    client.on_message = message
+    client.on_subscribe = subscribe
+    return client
 
 
 # try:
-client.connect()
-print("Here on conect")
-client.loop_background()  # Start the background loop for handling incoming messages
-complete_client = client
+# client.connect()
+# print("Here on conect")
+# client.loop_background()  # Start the background loop for handling incoming messages
+# complete_client = client
 # except Exception as e:
 #     print("Error:", e)
 #     sys.exit(1)

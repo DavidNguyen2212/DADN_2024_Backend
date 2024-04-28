@@ -28,23 +28,9 @@ db = mongo_client.db
 
 AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac']
 
-# @mqtt.on_connect()
-# def handle_connect(client, userdata, flags, rc):
-topics = list(map(lambda x: "Giaqui14032002/feeds/" + x, AIO_FEED_ID))
-for topic in topics:
-    mqtt.subscribe(topic)
-    print("Subcribe thành công")
-
-@mqtt.on_message()
-def handle_mqtt_message(client, userdata, message):
-    data = dict(
-        topic=message.topic,
-        payload=message.payload.decode()
-    )
-    # socket_io.emit('mqtt_message', data=data)
-    print("Nhận dữ liệu từ ", str(message.topic), ": ", str(message.payload.decode()))
-
-
+from library.connectIOserver import create_Client
+client = create_Client()
+client.loop_background()
 # from library import connectIOserver
 from library.controllers import notificationsController
 from library.controllers import authController

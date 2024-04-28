@@ -111,14 +111,15 @@ client.on_disconnect = disconnected
 client.on_message = message
 client.on_subscribe = subscribe
 
-try:
-    client.connect()
-    client.loop_background()  # Start the background loop for handling incoming messages
-except Exception as e:
-    print("Error:", e)
-    sys.exit(1)
+# try:
+#     client.connect()
+#     client.loop_background()  # Start the background loop for handling incoming messages
+# except Exception as e:
+#     print("Error:", e)
+#     sys.exit(1)
 
-
+client.connect()
+client.loop_background()  
 
 
 from library.controllers import notificationsController

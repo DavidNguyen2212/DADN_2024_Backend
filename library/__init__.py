@@ -1,5 +1,5 @@
-from gevent import monkey
-monkey.patch_all()
+import gevent.monkey
+gevent.monkey.patch_all()
 from flask import Flask, request, Blueprint
 from flask_pymongo import PyMongo
 from flask_socketio import SocketIO, emit, send

@@ -1,5 +1,5 @@
 from library import app
-from library import client
+# from library import client
 # from library import socket_io
 # from library import connectIOserver     # connected! 
 import sys,requests

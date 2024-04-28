@@ -1,5 +1,5 @@
-import eventlet
-eventlet.monkey_patch()
+# import eventlet
+# eventlet.monkey_patch()
 from flask import Flask, request, Blueprint
 from flask_pymongo import PyMongo
 from flask_socketio import SocketIO, emit, send
@@ -18,7 +18,7 @@ socket_io = SocketIO(app, cors_allowed_origins="*")
 
 @socket_io.on('connect')
 def test_connect():
-    print("socket connected")
+    print("Socket IO from smart_home_BackEnd connected")
 
 mongo_client = PyMongo(app)
 db = mongo_client.db

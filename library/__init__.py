@@ -39,7 +39,7 @@ import datetime, pytz
 
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
-AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac']
+AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac', 'door']
 AIO_USERNAME = os.environ.get("AIO_USERNAME")
 AIO_KEY = os.environ.get("AIO_KEY")
 
@@ -111,6 +111,8 @@ client.on_disconnect = disconnected
 client.on_message = message
 client.on_subscribe = subscribe
 
+client.connect()
+client.loop_background() 
 # try:
 #     client.connect()
 #     client.loop_background()  # Start the background loop for handling incoming messages

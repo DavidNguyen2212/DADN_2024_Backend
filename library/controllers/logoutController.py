@@ -1,6 +1,6 @@
 from library import app, db, bcrypt
 from flask import Flask, jsonify, request, make_response
-from flask_jwt_extended import create_access_token,get_csrf_token, unset_refresh_cookies, unset_jwt_cookies, get_jwt_identity, create_refresh_token, jwt_required, set_refresh_cookies
+from flask_jwt_extended import create_access_token,get_csrf_token, unset_refresh_cookies, unset_jwt_cookies, get_jwt_identity, create_refresh_token, jwt_required, set_refresh_cookies,verify_jwt_in_request
 import datetime
 
 # FE nhớ thêm vào header là X-CSRF-TOKEN: get từ cookies để logout được

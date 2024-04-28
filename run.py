@@ -7,6 +7,7 @@ import os
 
 
 client.connect()
+print("Here")
 client.loop_background()  
 this_app = app
 # if __name__ == "__main__":

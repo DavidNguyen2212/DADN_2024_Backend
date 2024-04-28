@@ -6,10 +6,16 @@ import datetime
 # FE nhớ thêm vào header là X-CSRF-TOKEN: get từ cookies để logout được
 users = db["users"]
 @app.route("/logout", methods=["DELETE"])
-@jwt_required(refresh=True, locations=['headers', 'cookies'], verify_type=False) # ['headers', 'cookies']
+# @jwt_required(refresh=True, locations=['headers', 'cookies'], verify_type=False) # ['headers', 'cookies']
 def handleLogout():
     try:
         cookie = request.cookies
+        csrf_refresh_token = request.cookies.get('csrf_refresh_token')
+
+        if not csrf_refresh_token:
+            return jsonify({"Error": "Cookie 'csrf_refresh_token' không tồn tại trong request."}), 444
+        
+        print(csrf_refresh_token)
         identity = get_jwt_identity()
 
         if identity is None:

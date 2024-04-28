@@ -24,7 +24,7 @@ mongo_client = PyMongo(app)
 db = mongo_client.db
 
 # from library import connectIOserver
-# from Adafruit_IO import MQTTClient
+# from Adafruit_IO import Client
 from library.initIOserver import MQTTClient
 import sys, os
 import json

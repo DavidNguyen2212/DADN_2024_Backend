@@ -118,8 +118,6 @@ client.on_subscribe = subscribe
 #     print("Error:", e)
 #     sys.exit(1)
 
-client.connect()
-client.loop_background()  
 
 
 from library.controllers import notificationsController

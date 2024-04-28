@@ -6,7 +6,7 @@ import datetime
 # FE nhớ thêm vào header là X-CSRF-TOKEN: get từ cookies để logout được
 users = db["users"]
 @app.route("/logout", methods=["DELETE"])
-@jwt_required(refresh=True, locations=['headers', 'cookies'], verify_type=False)
+@jwt_required(refresh=True, locations='headers', verify_type=False) # ['headers', 'cookies']
 def handleLogout():
     try:
         cookie = request.cookies

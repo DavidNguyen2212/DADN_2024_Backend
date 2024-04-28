@@ -17,9 +17,10 @@ jwt = JWTManager(app)
 # cookies = Cookies(app=app)
 socket_io = SocketIO(app, cors_allowed_origins="*")
 
-# @socket_io.on('message')
-# def handle_message(message):
-#     print('OK!, client rep: ' + message )
+@socket_io.on('connect')
+def test_connect():
+    print("socket connected")
+    
 mongo_client = PyMongo(app)
 db = mongo_client.db
 

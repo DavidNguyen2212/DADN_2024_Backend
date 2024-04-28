@@ -112,8 +112,8 @@ client.on_subscribe = subscribe
 
 client.connect()
 print("Here on conect")
-client.loop_background()  # Start the background loop for handling incoming messages
 complete_client = client
+client.loop_background()  # Start the background loop for handling incoming messages
 
 
 from library.controllers import notificationsController

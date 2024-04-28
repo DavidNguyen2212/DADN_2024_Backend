@@ -4,6 +4,7 @@ from flask_jwt_extended import create_access_token, get_jwt_identity, create_ref
 import datetime
 
 users = db["users"]
+# Implicit route, use Postman to test it
 @app.route("/register", methods=['POST'])
 def register():
     data = request.json

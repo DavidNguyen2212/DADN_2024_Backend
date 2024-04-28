@@ -3,7 +3,6 @@ from library.initIOserver import MQTTClient
 import sys, os
 import json
 from library import db
-from library.services.format import format_lvroom
 from library import socket_io
 from flask_socketio import emit, send
 from library.models.notificationModel import Notification

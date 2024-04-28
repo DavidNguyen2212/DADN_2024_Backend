@@ -85,10 +85,12 @@ client.on_disconnect = disconnected
 client.on_message = message
 client.on_subscribe = subscribe
 
+
 # try:
 client.connect()
 print("Here on conect")
 client.loop_background()  # Start the background loop for handling incoming messages
+complete_client = client
 # except Exception as e:
 #     print("Error:", e)
 #     sys.exit(1)

@@ -5,7 +5,7 @@ warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
 from library import app, db
 from flask import Flask, jsonify, request, make_response
 from library.services.format import handleRegex, get_Goldprice
-from library.connectIOserver import client
+from library.connectIOserver import complete_client as client
 # from library import client
 import requests
 

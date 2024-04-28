@@ -109,7 +109,7 @@ client.on_disconnect = disconnected
 client.on_message = message
 client.on_subscribe = subscribe
 
-
+client.connect()
 # client.loop()
 
 from library.controllers import notificationsController

@@ -8,9 +8,8 @@ from library import client
 # print("Here")
 # client.loop_background()  
 
-client.connect()
-print("Here on conect")
-complete_client = client
+# print("Here on conect")
+# complete_client = client
 client.loop_background()  # Start the background loop for handling incoming messages
 this_app = app
 # if __name__ == "__main__":

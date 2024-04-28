@@ -24,7 +24,7 @@ def test_connect():
 mongo_client = PyMongo(app)
 db = mongo_client.db
 
-# from library import connectIOserver
+from library import connectIOserver
 from library.controllers import notificationsController
 from library.controllers import authController
 from library.controllers import refreshTokenController

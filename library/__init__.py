@@ -113,8 +113,8 @@ client.on_subscribe = subscribe
 client.connect()
 print("Here on conect")
 complete_client = client
-client.loop_background()  # Start the background loop for handling incoming messages
-
+# client.loop_background()  # Start the background loop for handling incoming messages
+client.loop_blocking()
 
 from library.controllers import notificationsController
 from library.controllers import authController

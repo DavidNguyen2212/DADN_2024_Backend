@@ -7,7 +7,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from flask_cookies import Cookies
-from flask_mqtt import Mqtt
+# from flask_mqtt import Mqtt
 import json
 
 mqtt_connected = False 
@@ -17,7 +17,7 @@ CORS(app, origins="*", supports_credentials=True)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 socket_io = SocketIO(app, cors_allowed_origins="*")
-mqtt = Mqtt(app)
+# mqtt = Mqtt(app)
 
 @socket_io.on('connect')
 def test_connect():

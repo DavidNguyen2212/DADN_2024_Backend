@@ -7,10 +7,10 @@ from flask_jwt_extended import JWTManager
 
 app = Flask(__name__)
 app.config.from_pyfile("../config/config.py")
-CORS(app, origins="https://dadn-2024-team-blue-whale.vercel.app", supports_credentials=True)
+CORS(app, origins="*", supports_credentials=True)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-socket_io = SocketIO(app, cors_allowed_origins="https://dadn-2024-team-blue-whale.vercel.app")
+socket_io = SocketIO(app, cors_allowed_origins="*")
 mongo_client = PyMongo(app)
 db = mongo_client.db
 

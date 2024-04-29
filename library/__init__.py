@@ -1,8 +1,9 @@
 # import gevent.monkey
 # gevent.monkey.patch_all(thread=False)
 # gevent.monkey.is_object_patched('thread')\
-# import eventlet
-# eventlet.monkey_patch()
+
+import eventlet
+eventlet.monkey_patch()
 from flask import Flask, request, Blueprint
 from flask_pymongo import PyMongo
 from flask_socketio import SocketIO, emit, send
@@ -32,8 +33,6 @@ db = mongo_client.db
 from library import connectIOserver
 # client.loop()
 
-import eventlet
-eventlet.monkey_patch()
 
 from library.controllers import notificationsController
 from library.controllers import authController

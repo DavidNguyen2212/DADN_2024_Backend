@@ -4,7 +4,6 @@ from flask_socketio import SocketIO, emit, send
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
-import json
 
 app = Flask(__name__)
 app.config.from_pyfile("../config/config.py")

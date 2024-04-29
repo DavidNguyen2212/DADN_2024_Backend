@@ -3,4 +3,4 @@ from library import connectIOserver
 
 if __name__ == "__main__":
     # app.run(debug=True, use_debugger=True, use_reloader=False) 
-    socket_io.run(app, allow_unsafe_werkzeug=True)
+    socket_io.run(app, log_output=True, allow_unsafe_werkzeug=True)

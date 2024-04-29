@@ -2,12 +2,10 @@ import joblib, random
 from sklearn.exceptions import InconsistentVersionWarning
 import warnings
 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
-from library import app, db
-from flask import Flask, jsonify, request, make_response
+from library import app
+from flask import jsonify, request, make_response
 from library.services.format import handleRegex, get_Goldprice
 from library.connectIOserver import client
-# from library import client
-import requests
 
 def load_model(file_name):
     model = joblib.load(file_name, mmap_mode='r')

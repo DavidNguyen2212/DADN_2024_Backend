@@ -1,6 +1,6 @@
 from Adafruit_IO import MQTTClient
 import sys, os
-from library import socket_io
+# from library import socket_io
 from flask_socketio import emit, send
 from library.models.notificationModel import Notification
 from library.models.roomModel import Room
@@ -72,7 +72,7 @@ def message(client, feed_id, payload):
                             f"Nhiệt độ đang dưới mức 20 độ", 
                             time, "điều hòa", "phòng khách", False).to_dictFormat()
                 Notification.insert_notification(newNotif)
-                socket_io.emit('Announce change', {"refetch": True})
+                emit('Announce change', {"refetch": True})
 
 
 client = MQTTClient(AIO_USERNAME, AIO_KEY)

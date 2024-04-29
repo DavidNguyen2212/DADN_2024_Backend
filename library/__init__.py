@@ -10,7 +10,7 @@ app.config.from_pyfile("../config/config.py")
 CORS(app, origins="*", supports_credentials=True)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-socket_io = SocketIO(app, cors_allowed_origins="*")
+socket_io = SocketIO(app, cors_allowed_origins="*", async_mode="threading")
 mongo_client = PyMongo(app)
 db = mongo_client.db
 

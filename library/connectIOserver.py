@@ -72,7 +72,7 @@ def message(client, feed_id, payload):
                             f"Nhiệt độ đang dưới mức 20 độ", 
                             time, "điều hòa", "phòng khách", False).to_dictFormat()
                 Notification.insert_notification(newNotif)
-                emit('Announce change', {"refetch": True})
+                send('Announce change', {"refetch": True})
 
 
 client = MQTTClient(AIO_USERNAME, AIO_KEY)

@@ -9,7 +9,7 @@ import datetime, pytz
 
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
-AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac']
+AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac', 'door']
 AIO_USERNAME = os.environ.get("AIO_USERNAME")
 AIO_KEY = os.environ.get("AIO_KEY")
 

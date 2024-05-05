@@ -1,8 +1,8 @@
-import eventlet.wsgi
+# import eventlet.wsgi
 from library import app, socket_io
 from library import connectIOserver
 import os
-import eventlet
+# import eventlet
 
 if __name__ == "__main__":
     # app.run(debug=True, use_debugger=True, use_reloader=False) 

@@ -1,9 +1,6 @@
 from flask import render_template, request, jsonify
-import datetime
-import random
-import pytz
+import datetime, random, pytz
 from library import app
-from library import db
 from library.services import format
 from library.models.notificationModel import Notification
 from bson import ObjectId

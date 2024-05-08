@@ -2,17 +2,17 @@ import joblib, random
 from sklearn.exceptions import InconsistentVersionWarning
 import warnings
 warnings.filterwarnings("ignore", category=InconsistentVersionWarning)
-from library import app, db
-from flask import Flask, jsonify, request, make_response
+from library import app
+from flask import jsonify, request, make_response
 from library.services.format import handleRegex, get_Goldprice
 from library.connectIOserver import client
-import requests
 
 def load_model(file_name):
     model = joblib.load(file_name, mmap_mode='r')
     return model
 
 commandSet = load_model("library/AI_modules/commandVoice/commandset.pkl")
+weather_predictor, scaler = load_model("library/AI_modules/predictWeather/weatherPredictor.pkl")
 
 poems = ["Mặt trời mới mọc ở đằng tây... Thiên hạ ngạc nhiên chuyện lạ này. Ngơ ngác nhìn nhau và tự hỏi. Thức dậy hay là... ngủ nữa đây.",
          "Trong tù không rượu cũng không hoa, Cảnh đẹp đêm nay, khó hững hờ! Người ngắm trăng soi ngoài cửa sổ... Trăng nhòm khe cửa ngắm nhà thơ.",
@@ -64,3 +64,23 @@ def processText():
     
     response = make_response(jsonify({"Reply": "Error while processing text!"}))
     return response, 402
+
+@app.route("/weather_predict", methods=['GET'])
+def predict_weather():
+    temp = float(request.args.get("temp"))
+    humi = float(request.args.get("humi"))
+
+    input_data = [humi, temp]
+    scaled_data = scaler.transform([input_data])
+    prediction = weather_predictor.predict(scaled_data)
+    weather = None
+    if prediction[0] == 0:
+        weather = 'CLEAR'
+    elif prediction[0] == 1:
+        weather = 'CLOUDY'
+    elif prediction[0] == 2:
+        weather = 'RAINY'
+    else:
+        weather = 'SUNNY'
+
+    return jsonify({"Reply": weather}), 200

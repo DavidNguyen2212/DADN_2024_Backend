@@ -1,14 +1,10 @@
+# import eventlet.wsgi
+from library import app, socket_io
+from library import connectIOserver
+import os
+# import eventlet
 
-from library import app
-from library import socket_io
-from library import connectIOserver     # connected! 
-import sys,requests
-# from gevent import monkey
-# monkey.patch_all(thread=False, select=False)
-
-this_app = app
 if __name__ == "__main__":
     # app.run(debug=True, use_debugger=True, use_reloader=False) 
-    socket_io.run(app, allow_unsafe_werkzeug=True, port=5000)
-    # this_app = app
-    # app.run(debug=False)
+    # eventlet.wsgi.server(eventlet.listen(('', int(os.environ.get("PORT")))), app)
+    socket_io.run(app, host="0.0.0.0", port=os.environ.get("PORT"), allow_unsafe_werkzeug=True)

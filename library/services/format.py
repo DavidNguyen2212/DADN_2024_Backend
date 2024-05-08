@@ -52,29 +52,6 @@ def format_notifs(notices: any):
 
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
 
-def format_lvroom(field, value, last_record):
-    new_record = {
-        "automode": last_record["automode"],
-        "temp": last_record["temp"], "humidity": last_record["humidity"], "lux": last_record["lux"],
-        "chandeliers": last_record["chandeliers"],
-        "light1": last_record["light1"],
-        "light2": last_record["light2"],
-        "AC": last_record["AC"],
-        "tempAC": last_record["tempAC"],
-        "updated_at": last_record["updated_at"]
-    }
-    # if field in ["automode", "temp", "humidity", "lux"]:
-    #     new_record[field] = value
-    # elif field in ["chandeliers", "light1", "light2"]:
-    #     new_record["light"][field] = value
-    # elif field in ["state", "current_temp"]:
-    #     new_record["air_conditioner"][field] = value
-    if field is not None and value is not None:
-        new_record[field] = value
-        new_record["updated_at"] = datetime.datetime.now(tz).isoformat()
-
-    return new_record
-
 def handleRegex(reg: str):
     # Sử dụng regex để tìm và thay thế tất cả các ký tự số trong chuỗi thành một khoảng trắng
     num = re.search(r'\d+', reg)

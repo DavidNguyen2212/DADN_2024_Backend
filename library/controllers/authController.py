@@ -1,9 +1,10 @@
 from library import app, db, bcrypt
 from flask import Flask, jsonify, request, make_response
-from flask_jwt_extended import create_access_token, get_jwt_identity, create_refresh_token, jwt_required, set_refresh_cookies
+from flask_jwt_extended import create_access_token, get_jwt_identity, create_refresh_token, jwt_required, set_refresh_cookies, get_csrf_token
 import datetime
 
 users = db["users"]
+# Implicit route, use Postman to test it
 @app.route("/register", methods=['POST'])
 def register():
     data = request.json
@@ -37,8 +38,12 @@ def login():
 
         # Thêm trường refresh token của người dùng trong cơ sở dữ liệu
         users.update_one({"_id": user_found["_id"]}, {"$set": {"refresh_token": refresh_token}})
-        response = make_response(jsonify({"access_token": access_token}))
+        csrf_token = get_csrf_token(refresh_token)
+        print("csrf token: ", csrf_token)
+        response = make_response(jsonify({"access_token": access_token, "csrf_refresh_token": csrf_token}))
+        # response.set_cookie('abcid', 'Hello', domain="dadn-2024-team-blue-whale-1h2hw9qrf.vercel.app", secure=True, samesite='None', max_age=63072000)
         set_refresh_cookies(response, refresh_token, max_age=24*60*60*1000)
+
         # print(jsonify(response))
         return response, 200
     else:

@@ -1,18 +1,14 @@
-# from Adafruit_IO import MQTTClient
-from library.initIOserver import MQTTClient
+from Adafruit_IO import MQTTClient
 import sys, os
-import json
-from library import db
-from library.services.format import format_lvroom
 from library import socket_io
-from flask_socketio import emit, send
 from library.models.notificationModel import Notification
 from library.models.roomModel import Room
 from library.models.deviceModel import Device
 import datetime, pytz
 
+
 tz = pytz.timezone('Asia/Ho_Chi_Minh')
-AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac']
+AIO_FEED_ID = ['temp', 'humi', 'light', 'chandeliers', 'control-fan','ac', 'door', 'warning']
 AIO_USERNAME = os.environ.get("AIO_USERNAME")
 AIO_KEY = os.environ.get("AIO_KEY")
 
@@ -76,6 +72,21 @@ def message(client, feed_id, payload):
                             time, "điều hòa", "phòng khách", False).to_dictFormat()
                 Notification.insert_notification(newNotif)
                 socket_io.emit('Announce change', {"refetch": True})
+
+    elif feed_id == "warning":
+        time = datetime.datetime.now(tz).isoformat()
+        if payload == 'stranger':
+            newNotif = Notification("Cảnh báo", 
+                            f"Người lạ đang cố gắng mở cửa", 
+                            time, isRead=False).to_dictFormat()
+            Notification.insert_notification(newNotif)
+            socket_io.emit('Stranger', {"refetch": True})
+        elif payload == 'fire':
+            newNotif = Notification("Tai nạn xảy ra", 
+                            f"Tôi nghi ngờ đã xảy ra cháy. Xin vui lòng kiểm tra", 
+                            time, place="phòng khách").to_dictFormat()
+            Notification.insert_notification(newNotif)
+            socket_io.emit('Fire', {"refetch": True})
 
 
 client = MQTTClient(AIO_USERNAME, AIO_KEY)

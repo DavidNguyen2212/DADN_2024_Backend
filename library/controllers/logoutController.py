@@ -1,15 +1,14 @@
-from library import app, db, bcrypt, cookies
-from flask import Flask, jsonify, request, make_response
-from flask_jwt_extended import create_access_token,get_csrf_token, unset_refresh_cookies, unset_jwt_cookies, get_jwt_identity, create_refresh_token, jwt_required, set_refresh_cookies
-import datetime
+from library import app, db
+from flask import Flask, jsonify, make_response
+from flask_jwt_extended import unset_refresh_cookies, get_jwt_identity, jwt_required
+
 
 # FE nhớ thêm vào header là X-CSRF-TOKEN: get từ cookies để logout được
 users = db["users"]
 @app.route("/logout", methods=["DELETE"])
-@jwt_required(refresh=True, locations=['headers', 'cookies'], verify_type=False)
+@jwt_required(refresh=True, locations=['headers', 'cookies'], verify_type=False) # ['headers', 'cookies']
 def handleLogout():
     try:
-        cookie = request.cookies
         identity = get_jwt_identity()
 
         if identity is None:

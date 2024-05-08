@@ -69,7 +69,7 @@ def processText():
 def predict_weather():
     temp = float(request.args.get("temp"))
     humi = float(request.args.get("humi"))
-    # Example usage
+
     input_data = [humi, temp]
     scaled_data = scaler.transform([input_data])
     prediction = weather_predictor.predict(scaled_data)

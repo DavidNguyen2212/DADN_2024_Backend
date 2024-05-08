@@ -8,4 +8,4 @@ model = YOLO("library/AI_modules/fireDetection/best.pt")
 
 
 # Predict and get the results
-model.predict(source=0, imgsz=640, conf=0.5, show=False)
+model.predict(source=0, imgsz=640, conf=0.5, show=True)

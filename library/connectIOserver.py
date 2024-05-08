@@ -74,6 +74,7 @@ def message(client, feed_id, payload):
                 socket_io.emit('Announce change', {"refetch": True})
 
     elif feed_id == "warning":
+        time = datetime.datetime.now(tz).isoformat()
         if payload == 'stranger':
             newNotif = Notification("Cảnh báo", 
                             f"Người lạ đang cố gắng mở cửa", 

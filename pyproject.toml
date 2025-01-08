@@ -1,0 +1,26 @@
+[project]
+name = "my-dadn-app-be"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "adafruit-io==2.7.2",
+    "eventlet==0.36.1",
+    "flask==3.0.3",
+    "flask-bcrypt==1.0.1",
+    "flask-cookies==0.0.1",
+    "flask-cors==4.0.0",
+    "flask-jwt-extended==4.6.0",
+    "flask-pymongo==2.3.0",
+    "flask-socketio==5.3.6",
+    "joblib==1.3.2",
+    "matplotlib==3.8.3",
+    "paho-mqtt==2.0.0",
+    "pymongo==4.6.2",
+    "pyserial==3.5",
+    "python-dotenv==1.0.1",
+    "pytz==2024.1",
+    "requests==2.31.0",
+    "scikit-learn==1.4.0",
+]

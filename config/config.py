@@ -1,5 +1,5 @@
 import os
-from dotenv import load_dotenv  # pip3 install python-dotenv
+from dotenv import load_dotenv  
 
 load_dotenv()
 SECRET_KEY = os.environ.get("KEY")
